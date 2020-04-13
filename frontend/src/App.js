@@ -9,24 +9,6 @@ const state = {
 
 export default class App extends Component {
   render() {
-    const data = [
-      {
-        rank: 1,
-        term: 'Janitor',
-        count: 10
-      },
-      {
-        rank: 1,
-        term: 'Janitor',
-        count: 10
-      },
-      {
-        rank: 1,
-        term: 'Janitor',
-        count: 10
-      }
-    ];
-
     function handleClick() {
       fetch('http://localhost:5000/jokes',{
         mode: 'cors'
