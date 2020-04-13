@@ -13,7 +13,7 @@ function TableHeader() {
   );
 }
 
-class Table extends Component {
+export default class Table extends Component {
   render() {
     const {dadJokeData} = this.props;
     const tableRows = dadJokeData.map((data, index) =>
