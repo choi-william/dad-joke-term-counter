@@ -1,6 +1,7 @@
 
 import grequests # for sending requests asynchronously
 from flask import Flask
+from flask_cors import CORS
 
 import requests
 from requests import Session
@@ -10,6 +11,7 @@ from requests.packages.urllib3.util.retry import Retry
 import re # regex 
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/jokes')
 def getDadJokes():
@@ -38,14 +40,14 @@ def getDadJokes():
 	for response in responses:
 		print(response.json()['joke'])
 
-	for key, value in term_count.items():
-		print(key+': ', value)
+	for entry in term_count['data']:
+		print(entry['term']+': ', entry['count'])
 
 	return term_count
 
 # Counts the number of occurrences of each term from a list of dad joke responses
 def count_terms(responses):
-	count = {}
+	data = {}
 
 	for response in responses:
 		joke = response.json()['joke']
@@ -53,12 +55,24 @@ def count_terms(responses):
 		# Maybe this in regex? (?<![a-zA-Z])'|'(?![a-zA-Z])
 		terms = re.split('[\s"!?,.&-]+', joke.lower())
 		for term in terms:
-			if term in count:
-				count[term] += 1
+			if term in data:
+				data[term] += 1
 			elif term != '':
-				count[term] = 1
+				data[term] = 1
 
-	return count
+	data_formatted = []	
+	for key, value in data.items():
+		data_formatted.append({
+			'term':key,
+			'count':value,
+		})
+
+	# sort the list based on counts in decreasing order
+	def sortCounts(entry):
+		return entry['count']
+	data_formatted.sort(key=sortCounts, reverse=True)
+
+	return {'data' : data_formatted}			
 
 
 # To retry sending the request in the event of an error
@@ -80,5 +94,9 @@ def requests_retry_session(
 
 
 if __name__ == '__main__':
+	# To handle "greenlet.error"
+	from gevent import monkey
+	monkey.patch_all()
+
 	app.debug = True
 	app.run(host='0.0.0.0', port=5000)
