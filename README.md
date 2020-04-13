@@ -1,10 +1,11 @@
 # dad-joke-term-counter
 Simple web application that counts the number of terms in dad jokes. A combination of React and Flask was used for this project. The backend queries for massively entertaining dad jokes using the https://icanhazdadjoke.com/api.
 Here are some images of the application running:
+
 <img align="center" src="/sample_images/app_pic1.png"
-	title="Application Running" width="200" />
+	title="Application Running" width="400" />
 <img align="center" src="/sample_images/app_pic2.png"
-	title="Application Running" width="200" />  
+	title="Application Running" width="400" />  
   
   Enjoy!
 
